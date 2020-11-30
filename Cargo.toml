@@ -1,0 +1,15 @@
+[package]
+name = "byteparse"
+version = "0.1.0"
+authors = ["Jake Goulding <jake.goulding@gmail.com>"]
+edition = "2018"
+
+[profile.dev]
+# https://github.com/rust-lang/rust/issues/77650
+incremental = false
+
+[profile.release]
+# https://github.com/rust-lang/rust/issues/77650
+incremental = false
+
+[dependencies]
