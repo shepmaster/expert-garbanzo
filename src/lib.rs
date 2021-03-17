@@ -44,13 +44,6 @@ macro_rules! integer_impls {
 integer_impls!(u8, u16, u32, u64, u128, i8, i16, i32, i64, i128);
 
 #[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}
-
 mod example {
     use crate as the_crate;
 
@@ -81,9 +74,27 @@ mod example {
             let d = the_crate::FromExactBytesLe::from_bytes_le(d);
 
             // Compile-time check we consumed all the bytes
-            let _: &[u8; 0] = __remaining;
+            // let _: &[u8; 0] = __remaining;
 
             Self { a, b, c, d }
         }
+    }
+
+    #[test]
+    fn from_bytes() {
+        use crate::FromExactBytesLe;
+
+        let data = [
+            0x01,
+            0x02, 0x03,
+            0x04, 0x05, 0x06, 0x07,
+            0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+        ];
+        let h = Header::from_bytes_le(&data);
+
+        assert_eq!(h.a, 0x01);
+        assert_eq!(h.b, 0x0302);
+        assert_eq!(h.c, 0x0706_0504);
+        assert_eq!(h.d, 0x0F0E_0D0C_0B0A_0908);
     }
 }
